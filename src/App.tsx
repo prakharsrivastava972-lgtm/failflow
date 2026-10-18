@@ -21,7 +21,7 @@ export default function App() {
   return (
     <div className="h-screen flex flex-col bg-slate-900 text-slate-100 relative">
       <nav className="flex flex-wrap items-center gap-2 p-2 border-b border-slate-700 text-sm">
-        <span className="font-bold px-2">FailFlow</span>
+        <span className="font-bold text-lg px-2 bg-linear-to-r from-yellow-300 to-white bg-clip-text text-transparent">FailFlow</span>
         {btn('home', 'Overview')}
         {btn('sim', 'Failure Simulator')}
         {btn('spof', 'Critical Components')}
@@ -41,3 +41,6 @@ export default function App() {
     </div>
   );
 }
+
+
+

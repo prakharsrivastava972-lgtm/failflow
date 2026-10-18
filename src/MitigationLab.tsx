@@ -69,7 +69,7 @@ export default function MitigationLab({ onOpen }: { onOpen: () => void }) {
               <BarChart data={view.rows}>
                 <XAxis dataKey="metric" stroke="#94a3b8" /><YAxis allowDecimals={false} stroke="#94a3b8" />
                 <Tooltip /><Legend />
-                <Bar dataKey="Before" fill="#64748b" /><Bar dataKey="After" fill="#8b5cf6" />
+                <Bar dataKey="Before" fill="#94a3b8" /><Bar dataKey="After" fill="#facc15" />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -88,3 +88,6 @@ export default function MitigationLab({ onOpen }: { onOpen: () => void }) {
     </div>
   );
 }
+
+
+

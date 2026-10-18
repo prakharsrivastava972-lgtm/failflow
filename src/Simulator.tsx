@@ -60,10 +60,10 @@ export default function Simulator() {
     const hot = shown[d.dependent].health !== 'healthy' && shown[d.dependent].via === d.provider;
     return {
       id: `${d.provider}->${d.dependent}`, source: d.provider, target: d.dependent, animated: hot,
-      markerEnd: { type: MarkerType.ArrowClosed, color: hot ? '#ef4444' : '#64748b' },
+      markerEnd: { type: MarkerType.ArrowClosed, color: hot ? '#ef4444' : '#94a3b8' },
       label: d.group ? `backup group: ${d.group}` : d.kind === 'soft' ? 'soft' : undefined,
-      labelStyle: { fontSize: 10, fill: '#cbd5e1' }, labelBgStyle: { fill: '#0f172a' },
-      style: { stroke: hot ? '#ef4444' : '#64748b', strokeWidth: hot ? 3 : 1.5, strokeDasharray: d.kind === 'soft' ? '6 4' : undefined },
+      labelStyle: { fontSize: 10, fill: '#cbd5e1' }, labelBgStyle: { fill: '#1e293b' },
+      style: { stroke: hot ? '#ef4444' : '#94a3b8', strokeWidth: hot ? 3 : 1.5, strokeDasharray: d.kind === 'soft' ? '6 4' : undefined },
     };
   }), [system, shown]);
 
@@ -165,3 +165,6 @@ export default function Simulator() {
     </div>
   );
 }
+
+
+
