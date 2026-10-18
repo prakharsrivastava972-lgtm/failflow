@@ -24,3 +24,38 @@ export function withoutBackup(s: System): System {
       .map(d => (d.provider === 'payment' && d.group === 'payments' ? { ...d, group: undefined } : d)),
   };
 }
+
+/** Generic redundancy: adds an identical replica of `id` in the same redundancy group for every dependent. */
+const replicaId = (id: string) => `${id}-replica`;
+const groupName = (id: string) => `${id}-ha`;
+
+export const hasReplica = (s: System, id: string) => s.components.some(c => c.id === replicaId(id));
+
+export function addRedundant(s: System, id: string): System {
+  const orig = s.components.find(c => c.id === id);
+  if (!orig || hasReplica(s, id)) return s;
+  const rid = replicaId(id), g = groupName(id);
+  const downstream = s.dependencies.filter(d => d.provider === id);
+  const upstream = s.dependencies.filter(d => d.dependent === id);
+  return {
+    components: [...s.components, { id: rid, name: `${orig.name} (replica)`, type: orig.type }],
+    dependencies: [
+      ...s.dependencies.map(d => (d.provider === id ? { ...d, group: d.group ?? g } : d)),
+      // replica serves the same dependents, in the same group as the original
+      ...downstream.map(d => ({ provider: rid, dependent: d.dependent, kind: d.kind, group: d.group ?? g })),
+      // replica needs the same upstream providers as the original, so shared upstream failures still hit both
+      ...upstream.map(d => ({ provider: d.provider, dependent: rid, kind: d.kind, group: d.group })),
+    ],
+  };
+}
+
+export function removeRedundant(s: System, id: string): System {
+  if (!hasReplica(s, id)) return s;
+  const rid = replicaId(id), g = groupName(id);
+  return {
+    components: s.components.filter(c => c.id !== rid),
+    dependencies: s.dependencies
+      .filter(d => d.provider !== rid && d.dependent !== rid)
+      .map(d => (d.provider === id && d.group === g ? { ...d, group: undefined } : d)),
+  };
+}

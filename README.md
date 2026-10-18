@@ -72,3 +72,14 @@ Monotone fixed-point propagation in synchronous rounds. Health only gets worse, 
 ## Screenshots
 
 Add screenshots to `docs/` and link them here (graph view, failure propagation, critical components, mitigation comparison).
+
+## 90-second demo script
+
+1. **Overview:** "FailFlow turns a dependency diagram into a working failure simulator. Nothing is hardcoded; every result comes from a deterministic engine."
+2. **Scenario A (Payment Gateway failure):** click *Run scenario*, then **Play**. "Round 1 the gateway fails, round 2 Checkout, round 3 Order, round 4 Notification degrades. The client stays up because the catalogue link is soft."
+3. **Explain:** click *Order Service* and read the generated explanation and propagation path.
+4. **Critical Components:** "Every component was failed alone and ranked by blast radius. Database is the biggest single point of failure."
+5. **Fix it live:** fail *Database*, select it, click *Add replica*. "8 components down becomes 1, and the engine verified it."
+6. **Prove it is real:** fail the replica too and the cascade returns.
+7. **History and reports:** save the runs, compare them, export a CSV/JSON report.
+8. **Honesty:** "It simulates the structural model you define; it does not monitor real infrastructure."
