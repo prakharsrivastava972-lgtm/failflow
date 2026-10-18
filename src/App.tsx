@@ -1,47 +1,18 @@
 ﻿import { useState } from 'react';
-import Overview from './Overview';
-import Simulator from './Simulator';
-import SpofPanel from './SpofPanel';
-import MitigationLab from './MitigationLab';
-import HistoryPanel from './HistoryPanel';
-import ProjectBar from './ProjectBar';
-import Tour, { TOUR_KEY, type TabId } from './Tour';
-import { useUndo } from './undo';
+import Workspace from './Workspace';
+import Landing from './Landing';
+import Login, { type Mode } from './Login';
+import { useAuth } from './auth';
 
 export default function App() {
-  const [tab, setTab] = useState<TabId>('home');
-  const [tour, setTour] = useState<boolean>(() => {
-    try { return localStorage.getItem(TOUR_KEY) !== '1'; } catch { return true; } // first visit => show the tour
-  });
-  const { past, future, undo, redo } = useUndo();
-  const btn = (t: TabId, label: string) => (
-    <button onClick={() => setTab(t)} aria-current={tab === t}
-      className={`px-3 py-1 rounded ${tab === t ? 'bg-violet-600' : 'bg-slate-800 hover:bg-slate-700'}`}>{label}</button>
-  );
-  const toSim = () => setTab('sim');
-  const small = 'px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 disabled:opacity-40';
-  return (
-    <div className="h-screen flex flex-col bg-slate-900 text-slate-100 relative">
-      <nav className="flex flex-wrap items-center gap-2 p-2 border-b border-slate-700 text-sm">
-        <span className="font-bold text-lg px-2 bg-linear-to-r from-yellow-300 to-white bg-clip-text text-transparent">FailFlow</span>
-        {btn('home', 'Overview')}
-        {btn('sim', 'Failure Simulator')}
-        {btn('spof', 'Critical Components')}
-        {btn('lab', 'Mitigation Lab')}
-        {btn('history', 'Scenario History')}
-        <button className={small} onClick={undo} disabled={!past.length} aria-label="Undo" title="Undo">↶ Undo</button>
-        <button className={small} onClick={redo} disabled={!future.length} aria-label="Redo" title="Redo">↷ Redo</button>
-        <button className={small} onClick={() => setTour(true)} aria-label="Open guided tour" title="Step-by-step guide">? Guide</button>
-        <ProjectBar />
-      </nav>
-      <div className="flex-1 min-h-0">
-        {tab === 'home' && <Overview onRun={toSim} onBuild={toSim} />}
-        {tab === 'sim' && <Simulator />}
-        {tab === 'spof' && <SpofPanel onOpen={toSim} />}
-        {tab === 'lab' && <MitigationLab onOpen={toSim} />}
-        {tab === 'history' && <HistoryPanel onOpen={toSim} />}
-      </div>
-      <Tour open={tour} onClose={() => setTour(false)} goTo={setTab} />
-    </div>
-  );
+  const { user, logOut, guest } = useAuth();
+  const [view, setView] = useState<'landing' | Mode>('landing');
+
+  if (user) {
+    return <Workspace userName={user.guest ? 'Guest' : user.name} onLogout={() => { logOut(); setView('landing'); }} />;
+  }
+  if (view === 'landing') {
+    return <Landing onLogin={() => setView('login')} onSignup={() => setView('signup')} onGuest={guest} />;
+  }
+  return <Login mode={view} setMode={setView} onBack={() => setView('landing')} />;
 }
