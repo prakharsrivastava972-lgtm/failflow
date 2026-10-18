@@ -4,13 +4,14 @@ import Overview from './Overview';
 import Simulator from './Simulator';
 import SpofPanel from './SpofPanel';
 import MitigationLab from './MitigationLab';
+import HardenPanel from './HardenPanel';
 import HistoryPanel from './HistoryPanel';
 import ProjectBar from './ProjectBar';
 import Tour, { TOUR_KEY, type TabId } from './Tour';
 import { useUndo } from './undo';
 
 const TABS: [TabId, string][] = [
-  ['home', 'Overview'], ['sim', 'Failure Simulator'], ['spof', 'Critical Components'], ['lab', 'Mitigation Lab'], ['history', 'Scenario History'],
+  ['home', 'Overview'], ['sim', 'Failure Simulator'], ['spof', 'Critical Components'], ['lab', 'Mitigation Lab'], ['harden', 'Harden'], ['history', 'Scenario History'],
 ];
 
 export default function Workspace({ userName, onLogout }: { userName: string; onLogout: () => void }) {
@@ -51,9 +52,11 @@ export default function Workspace({ userName, onLogout }: { userName: string; on
         {tab === 'sim' && <Simulator />}
         {tab === 'spof' && <SpofPanel onOpen={toSim} />}
         {tab === 'lab' && <MitigationLab onOpen={toSim} />}
+        {tab === 'harden' && <HardenPanel onOpen={toSim} />}
         {tab === 'history' && <HistoryPanel onOpen={toSim} />}
       </div>
       <Tour open={tour} onClose={() => setTour(false)} goTo={setTab} />
     </div>
   );
 }
+

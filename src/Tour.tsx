@@ -1,7 +1,7 @@
 ﻿import { useEffect, useState } from 'react';
 import { useStore } from './store/useStore';
 
-export type TabId = 'home' | 'sim' | 'spof' | 'lab' | 'history';
+export type TabId = 'home' | 'sim' | 'spof' | 'lab' | 'harden' | 'history';
 export const TOUR_KEY = 'failflow:tour:v1';
 
 interface Step { tab: TabId; title: string; body: string[]; action?: { label: string; run: () => void } }
@@ -109,3 +109,4 @@ export default function Tour({ open, onClose, goTo }: { open: boolean; onClose: 
     </div>
   );
 }
+
