@@ -1,6 +1,9 @@
 ﻿import { useRef, useState } from 'react';
+import { Download, Upload } from 'lucide-react';
 import { useStore } from './store/useStore';
 import { validateSystem } from './engine/graph-validation';
+
+const icon = 'h-8 w-8 flex items-center justify-center rounded bg-slate-800 hover:bg-slate-700';
 
 export default function ProjectBar() {
   const { system, replaceSystem } = useStore();
@@ -32,18 +35,17 @@ export default function ProjectBar() {
   };
 
   return (
-    <div className="ml-auto flex items-center gap-2">
-      {warnings.length > 0 && <span title={warnings.join(' ')} className="text-amber-400">▲ Cycle warning</span>}
-      <span className="text-xs text-slate-400">Saved in this browser</span>
-      <button onClick={exportJson} className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700">Export JSON</button>
-      <button onClick={() => fileRef.current?.click()} className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700">Import JSON</button>
+    <>
+      {warnings.length > 0 && <span title={warnings.join(' ')} className="text-amber-400 text-xs px-1 whitespace-nowrap">▲ Cycle<span className="hidden xl:inline"> warning</span></span>}
+      <button onClick={exportJson} className={icon} aria-label="Export JSON" title="Export system as JSON (saved in this browser automatically)"><Download size={16} aria-hidden="true" /></button>
+      <button onClick={() => fileRef.current?.click()} className={icon} aria-label="Import JSON" title="Import system from JSON"><Upload size={16} aria-hidden="true" /></button>
       <input ref={fileRef} type="file" accept="application/json,.json" className="hidden" onChange={onFile} aria-label="Import system JSON" />
       {msg && (
-        <div role="alert" className={`absolute right-3 top-12 z-50 max-w-sm rounded border p-3 text-xs ${msg.ok ? 'bg-green-950 border-green-600' : 'bg-red-950 border-red-600'}`}>
+        <div role="alert" className={`absolute right-3 top-14 z-50 max-w-sm rounded border p-3 text-xs ${msg.ok ? 'bg-green-950 border-green-600' : 'bg-red-950 border-red-600'}`}>
           {msg.lines.map((l, i) => <div key={i}>{l}</div>)}
           <button onClick={() => setMsg(null)} className="mt-2 underline">Dismiss</button>
         </div>
       )}
-    </div>
+    </>
   );
 }
