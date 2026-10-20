@@ -4,6 +4,7 @@ import '@xyflow/react/dist/style.css';
 import { useStore } from './store/useStore';
 import { simulate } from './engine/propagation';
 import { metrics } from './engine/metrics';
+import Capabilities from './Capabilities';
 import { compare } from './engine/mitigation';
 import { maxStep, resultAtStep, eventsAtStep } from './engine/playback';
 import { addRedundant, removeRedundant, hasReplica, hasBackup } from './mitigationOps';
@@ -149,6 +150,7 @@ export default function Simulator() {
           </>) : <p className="text-xs text-slate-400">Select a component to add a replica (same dependents, same redundancy group).</p>}
         </section>
 
+        <Capabilities system={system} result={shown} />
         <button onClick={reset} className="px-3 py-1 rounded border border-slate-600">Reset all failures</button>
         <DesignerPanel />
 
@@ -165,6 +167,7 @@ export default function Simulator() {
     </div>
   );
 }
+
 
 
 

@@ -7,6 +7,7 @@ import { scenarios } from './data/sample-scenarios';
 import { rankSpofs } from './engine/spof-analysis';
 import { simulate } from './engine/propagation';
 import { metrics } from './engine/metrics';
+import Capabilities from './Capabilities';
 
 const ICONS = [AlertTriangle, Database, ShieldCheck];
 const card = 'bg-slate-800/80 border border-slate-700 rounded-xl p-4';
@@ -134,6 +135,8 @@ export default function Overview({ onRun, onBuild }: { onRun: () => void; onBuil
           <p className="text-xs text-slate-500">Loading a scenario replaces the current graph. Undo in the top bar brings it back.</p>
         </section>
 
+        <Capabilities system={system} result={res} />
+
         <section className={`${card} space-y-2`}>
           <h2 className="font-semibold text-base flex items-center gap-2"><History size={16} aria-hidden="true" /> Recent saved runs</h2>
           {runs.length === 0 ? <p className="text-slate-400">No saved runs yet. Fail a component and save it in Scenario History.</p> : runs.slice(0, 3).map(r => (
@@ -149,3 +152,4 @@ export default function Overview({ onRun, onBuild }: { onRun: () => void; onBuil
     </div>
   );
 }
+
