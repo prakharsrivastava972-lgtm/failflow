@@ -83,3 +83,12 @@ Add screenshots to `docs/` and link them here (graph view, failure propagation, 
 6. **Prove it is real:** fail the replica too and the cascade returns.
 7. **History and reports:** save the runs, compare them, export a CSV/JSON report.
 8. **Honesty:** "It simulates the structural model you define; it does not monitor real infrastructure."
+
+## Additional features
+
+- **Harden my system:** the engine tries a replica on each risky component, re-runs every single-component failure, and recommends the steps that raise the resilience score the most (each number is measured, not estimated).
+- **Business capabilities:** define what users can do (for example "Customers can buy") and see it go Available, Degraded or Down as components fail. Replicas count toward availability.
+- **Round-by-round playback** of failure propagation, with a caption for every round.
+- **Generic redundancy:** add a replica of any component; the engine verifies the improvement.
+- **Resilience score and dashboard** computed from real simulation runs.
+- **Guided tour, undo/redo, landing page and a local demo login** (accounts are stored only in the visitor's browser and are not real security).
